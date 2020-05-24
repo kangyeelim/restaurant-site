@@ -1,0 +1,264 @@
+{% extends "orders/layout.html" %}
+
+{% block body %}
+<header>
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <!-- Slide One - Set the background image for this slide in the line below -->
+      <div class="carousel-item active" style="background-image: url('../static/orders/img/bannerpromo.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <!--<p class="lead" style="color:black">Customise your own pizza and choose all your favourite toppings!</p>-->
+        </div>
+      </div>
+      <!-- Slide Two - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('../static/orders/img/bannerpizza.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <!--<h3 class="display-4" style="color:black">Promotion</h3>
+          <p class="lead">Get it while it lasts!</p>-->
+        </div>
+      </div>
+      <!-- Slide Three - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('../static/orders/img/banner3.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <!--<h3 class="display-4">Promotion</h3>
+          <p class="lead">Another amazing deal!</p>-->
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+  </div>
+</header>
+
+<!-- Page Content -->
+<section class="py-5">
+  <div class="container">
+    <h1 class="font-weight-light" style="text-align:center">Order Menu</h1>
+    <p class="lead" style="text-align:center">Add food items into your cart here and check out the cart to place the order.
+    Pick up from our store in just 30 minutes.</p>
+    <div style="height:20px"></div>
+    <div class="row align-items-center">
+    <div class="col">
+      <h3 class="font-weight-light" style="text-align:center">Regular Pizza</h3>
+      <div class="card w-100 mx-auto" style="width: 18rem; align:center">
+        <img src="../static/orders/img/regularpizza.jpg" class="card-img-top" alt="regular pizza">
+        <div class="card-body">
+            <p class="card-text">An all-time favourite with our classic fluffy but light crust.</p>
+            <a href="{% url 'alltoppings' type='regular' %}" class="btn btn-primary">Order</a>
+        <div style="height:20px"></div>
+        <table class="card-table table">
+            <thead>
+              <tr>
+                <th>Small (2-3 pax)</th>
+                <th>Large (5-6 pax)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                Cheese $12.70
+                </td>
+                <td>
+                  Cheese $17.70
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  1 Topping $13.70
+                </td>
+                <td>
+                  1 Topping $18.70
+                </td>
+              </tr>
+              <tr>
+                <td>
+                2 Topping $14.70
+                </td>
+                <td>
+                  2 Topping $19.70
+                </td>
+              </tr>
+              <tr>
+                <td>
+                3 Topping $16.20
+                </td>
+                <td>
+                3 Topping $21.20
+                </td>
+              </tr>
+              <tr>
+                <td>
+                4 Topping $18.20
+                </td>
+                <td>
+                4 Topping $23.20
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+    <h3 class="font-weight-light" style="text-align:center">Sicilian Pizza</h3>
+      <div class="card w-100 mx-auto" style="width: 18rem;">
+        <img src="../static/orders/img/sicilianpizza.jpeg" class="card-img-top" alt="sicilian pizza">
+        <div class="card-body">
+          <p class="card-text">A deep-dish with a satisfying thick-crust.</p>
+            <a href="{% url 'alltoppings' type='sicilian' %}" class="btn btn-primary">Order</a>
+
+            <div style="height:20px"></div>
+
+        <table class="card-table table">
+            <thead>
+              <tr>
+                <th scope="col">Small (2-3 pax)</th>
+                <th scope="col">Large (5-6 pax)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                Cheese $16.70
+                </td>
+                <td>
+                Cheese $21.70
+                </td>
+              </tr>
+              <tr>
+                <td>
+                1 Topping $17.70
+                </td>
+                <td>
+                1 Topping $22.70
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  2 Topping $18.70
+                </td>
+                <td>
+                  2 Topping $23.70
+                </td>
+              </tr>
+              <tr>
+                <td>
+                3 Topping $20.20
+                </td>
+                <td>
+                3 Topping $25.20
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  4 Topping $21.20
+                </td>
+                <td>
+                4 Topping $26.20
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+
+  <h3 class="font-weight-light" style="text-align:center">Pizza Toppings</h3>
+  <p class="lead" style="text-align:center">Made from the freshest ingredients.</p>
+    <div class="row">
+      <div class="col-lg-2 mx-auto text-center">
+        <!--<div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <p class="card-text">Pepperoni</p>
+            </div>
+          </div>-->
+          <img src="../static/orders/img/pepperoni.jpg" class="rounded-circle" alt="pepperoni">
+          <span class="caption font-weight-light">Pepperoni</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/sausage.jpg" class="rounded-circle" alt="sausage" >
+        <span class="caption font-weight-light">Sausages</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/mushroom.jpg" class="rounded-circle" alt="mushrooms">
+        <span class="caption font-weight-light">Mushrooms</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/onion.jpg" class="rounded-circle" alt="onions">
+        <span class="caption font-weight-light">Onions</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/ham.jpg" class="rounded-circle" alt="ham">
+        <span class="caption font-weight-light">Ham</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/bacon.jpg" class="rounded-circle" alt="canadian bacon">
+        <span class="caption font-weight-light">Canadian Bacon</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/pineapple.jpg" class="rounded-circle" alt="pineapple">
+        <span class="caption font-weight-light">Pineapple</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/eggplant.jpg" class="rounded-circle" alt="eggplant">
+        <span class="caption font-weight-light">Eggplant</span>
+      </div>
+      <div class="col-lg-2 mx-auto text-center">
+        <img src="../static/orders/img/tomatobasil.jpg" class="rounded-circle" alt="tomatobasil">
+        <span class="caption font-weight-light">Tomato & Basil</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+          <img src="../static/orders/img/burger.jpg" class="rounded-circle" alt="Hamburger">
+          <span class="caption font-weight-light">Hamburger</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/spinach.jpeg" class="rounded-circle" alt="spinach">
+        <span class="caption font-weight-light">Spinach</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/artichoke.jpg" class="rounded-circle" alt="artichoke">
+        <span class="caption font-weight-light">Artichoke</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/chicken.jpg" class="rounded-circle" alt="buffalo chicken">
+        <span class="caption font-weight-light">Buffalo Chicken</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/bbq.jpg" class="rounded-circle" alt="bbq chicken">
+        <span class="caption font-weight-light">Barbeque Chicken</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/anchovies.jpg" class="rounded-circle" alt="anchovies">
+        <span class="caption font-weight-light">Anchovies</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/olives.jpg" class="rounded-circle" alt="Olives">
+        <span class="caption font-weight-light">Black Olives</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/garlic.jpg" class="rounded-circle img-responsive center-block" alt="garlic">
+        <span class="caption font-weight-light">Fresh Garlic</span>
+      </div>
+      <div class="col-lg-2  mx-auto text-center">
+        <img src="../static/orders/img/zucchini.jpg" class="rounded-circle img-responsive center-block" alt="zucchini">
+        <span class="caption font-weight-light">Zucchini</span>
+      </div>
+
+  </div>
+</section>
+{% endblock %}

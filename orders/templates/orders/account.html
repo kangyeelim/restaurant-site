@@ -1,0 +1,66 @@
+{% extends "orders/layout.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'orders/account.css' %}"/>
+{% endblock %}
+
+
+{% block body %}
+<body">
+  <div style="height:80px"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Customer Information</h5>
+            <p class="card-text">Username: {{ username }}</p>
+            <p class="card-text">Email: {{ email }}</p>
+            <hr class="my-4">
+              <form class="form-signin" action="#" method="post">
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update email</button>
+                 <div style="height:10px"></div>
+			       </form>
+             <form class="form-signin" action="#" method="post">
+               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update username</button>
+                <div style="height:10px"></div>
+            </form>
+            <form class="form-signin" action="#" method="post">
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update password</button>
+           </form>
+           <hr class="my-4">
+           <form class="form-signin" action="{% url 'logout' %}" method="post">
+             {% csrf_token %}
+             <button class="btn btn-lg btn-warning btn-block text-uppercase" type="submit" value="Logout">Log out</button>
+          </form>
+          </div>
+        </div>
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Your Orders</h5>
+            {% if submittedOrders %}
+              <ol>
+              {% for submittedOrder in submittedOrders %}
+                <li class="font-weight-light" style="font-size: 1.25em"><span><h5 class="font-weight-light">Order:</h5>
+                  <h6 class="font-weight-light">{{ submittedOrder.order.order_time }}</h6>
+                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'orderdetails' submittedOrder.order.id %}">Order Details</a></span>
+                </li>
+                <div style="height:10px"></div>
+                <h5 class="font-weight-light">Total: ${{ submittedOrder.order.bill }}</h5>
+                <h5 class="font-weight-light">Status: {{ submittedOrder.status }}</h5>
+                <hr class="my-4">
+                {% endfor %}
+              </ol>
+
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Pizza Kneads</title>
+    <meta name="viewport" content="width=devicewidth, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'orders/index.css' %}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+  </head>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Pizza Kneads</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{%  url 'adminsignout' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <body">
+    <div style="height:80px"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Orders</h5>
+              {% if submittedOrders %}
+
+
+                <ol class="font-weight-light">
+                {% for submittedOrder in submittedOrders %}
+                  <li style="font-size: 1.25em" class="font-weight-light">Order made: {{ submittedOrder.order.order_time }}
+                    {% if submittedOrder.order.pizzas %}
+                    <ul>
+                        <li><h5 class="font-weight-light">Pizza</h5></li>
+                      <ol>
+                      {% for pizza in submittedOrder.order.pizzas.all %}
+                      <li><h6 class="font-weight-light">{{ pizza.pizza_type.type }} pizza ({{ pizza.pizza_type.topping_num }}) toppings:</h6>
+                          {% if pizza.toppings %}
+                          <ol>
+                            {% for topping in pizza.toppings.all %}
+                              <li>{{ topping.topping }}</li>
+                            {% endfor %}
+                          </ol>
+                          {% endif %}
+                      </li>
+                      {% endfor %}
+                    </ol>
+                  </ul>
+                  {% endif %}
+                </li>
+                <h5 class="font-weight-light">Total: ${{ submittedOrder.order.bill }}</h5>
+                <h5 class="font-weight-bold">Status: {{ submittedOrder.status }}</h5>
+                <form action="{% url 'updateStatus' submittedOrder.id %}" method="post">
+                  {% csrf_token %}
+                  <select class="custom-select mr-sm-2" id="status" name="status">
+                    <option selected>Working on it.</option>
+                    <option value="Ready in 10 Minutes.">Ready in 10 Minutes.</option>
+                    <option value="Ready for collection.">Ready for collection.</option>
+                    <option value="Order collected.">Order collected.</option>
+                  </select>
+                  <div style="height:10px"></div>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="updateStatus">Submit</button>
+                </form>
+                <hr class="my-4">
+                {% endfor %}
+              </ol>
+              {% endif %}
+            <!--<form class="form-signin" action="{% url 'submitorder' %}" method="post">
+               {% csrf_token %}
+               <button class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Submit Order</button>
+            </form>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

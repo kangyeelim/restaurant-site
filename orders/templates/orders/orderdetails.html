@@ -1,0 +1,44 @@
+{% extends "orders/layout.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'orders/account.css' %}"/>
+{% endblock %}
+
+
+{% block body %}
+<body">
+  <div style="height:80px"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Order details</h5>
+            <ul>
+            {% if order.pizzas %}
+              <li><h5 class="font-weight-light">Pizza</h5></li>
+              <ol>
+                {% for pizza in order.pizzas.all %}
+                <li class="font-weight-light">
+                  <h6 class="font-weight-light">{{ pizza.pizza_type.type }} pizza with {{ pizza.pizza_type.topping_num }} topping(s): ${{ pizza.pizza_type.price }}</h6>
+                  {% if pizza.toppings.all %}
+                  <h6 class="font-weight-light">topping(s):</h6>
+                  <ol>
+                    {% for topping in pizza.toppings.all %}
+                    <li class="font-weight-light">{{ topping.topping }}</li>
+                    {% endfor %}
+                  </ol>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ol>
+            {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
