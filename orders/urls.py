@@ -23,5 +23,6 @@ urlpatterns = [
     path("steaksides", views.steaksides, name="steaksides"),
     path("addsteak", views.addsteak, name="addsteak"),
     path('getsteakprice', views.getsteakprice, name="getsteakprice"),
-    path("<int:id>/removesteak", views.removesteak, name="removeSteak")
+    path("<int:id>/removesteak", views.removesteak, name="removeSteak"),
+    path("location", views.location, name="location")
 ]

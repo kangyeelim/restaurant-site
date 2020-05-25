@@ -261,3 +261,6 @@ def getprice(request):
         type = request.POST.get("type")
         pizza = Pizza.objects.all().filter(size=size).filter(type=type).filter(topping_num=topping_num).get()
         return JsonResponse({'price':pizza.price})
+
+def location(request):
+    return render(request, "orders/location.html")
