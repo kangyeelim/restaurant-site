@@ -7,7 +7,7 @@ from decimal import *
 from django.views.decorators.http import require_http_methods
 
 from datetime import datetime
-from .models import Pizza, Topping, CustomisedPizza, Order, SubmittedOrder
+from .models import Pizza, Topping, CustomisedPizza, Order, SubmittedOrder, CustomisedSteak, Steak, Steakside
 
 # Create your views here.
 
@@ -42,6 +42,42 @@ def addpizza(request, type):
         request.session.get("pizzas").append(customisedPizza.id)
         #request.session.modified = True
         return render(request, "orders/index.html")
+
+def steaksides(request):
+    if not request.user.is_authenticated:
+        return render(request, "orders/login.html", {"message": 'Please sign in to order.'})
+    steakSides = Steakside.objects.all()
+    context = {
+        "steakSides": steakSides
+    }
+    return render(request, "orders/steaksides.html", context)
+
+def addsteak(request):
+    size = request.POST["size"]
+    quantity = int(request.POST["quantity"])
+    choices = request.POST.getlist('choice[]')
+    done = request.POST["done"]
+    side_num = len(choices)
+    steak_type = Steak.objects.all().filter(side_num=side_num).filter(size=size).get()
+
+    for i in range(quantity):
+        customisedSteak = CustomisedSteak()
+        customisedSteak.steak_type = steak_type
+        customisedSteak.order = Order.objects.get(id=request.session.get("order"))
+        customisedSteak.done = done
+        customisedSteak.save()
+        for choice in choices:
+            side = Steakside.objects.all().filter(side=choice).get()
+            customisedSteak.sides.add(side)
+        request.session.get("steaks").append(customisedSteak.id)
+        return render(request, "orders/index.html")
+
+def getsteakprice(request):
+    if request.method == 'POST':
+        side_num = request.POST.get("side_num")
+        size = request.POST.get("size")
+        steak = Steak.objects.all().filter(size=size).filter(side_num=side_num).get()
+        return JsonResponse({'price':steak.price})
 
 def signin(request):
     username = request.POST["username"]
@@ -117,10 +153,16 @@ def getFoodsAndTotal(request):
     for customisedPizza_id in request.session.get("pizzas"):
         pizza = CustomisedPizza.objects.get(id=customisedPizza_id)
         pizzas.append(pizza)
-    total = calculateTotal(request)
+    steaks = []
+    for steak_id in request.session.get("steaks"):
+        steak = CustomisedSteak.objects.get(id=steak_id)
+        steaks.append(steak)
+
+    total = calculateTotal(request) + calculateSteakTotal(request)
     context = {
         "pizzas": pizzas,
-        "total": total
+        "total": total,
+        "steaks": steaks
     }
     return context
 
@@ -132,11 +174,19 @@ def removePizza(request, id):
     context = getFoodsAndTotal(request)
     return render(request, "orders/cart.html", context, {"message": "Removed from cart."})
 
+def removesteak(request, id):
+    if not request.user.is_authenticated:
+        return render(request, "orders/login.html", {"message": None}) #done
+    request.session.get("steaks").remove(id)
+    CustomisedSteak.objects.filter(id=id).delete()
+    context = getFoodsAndTotal(request)
+    return render(request, "orders/cart.html", context, {"message": "Removed from cart."})
+
 
 def submitorder(request):
     order = Order.objects.get(id=request.session.get("order"))
     order.order_time = datetime.now()
-    order.bill = calculateTotal(request)
+    order.bill = calculateTotal(request) + calculateSteakTotal(request)
     order.save()
     submittedOrder = SubmittedOrder(order = order)
     submittedOrder.save()
@@ -149,12 +199,20 @@ def initialiseSession(request):
     order.save()
     request.session['order'] = order.id
     request.session['pizzas'] = []
+    request.session['steaks'] = []
 
 def calculateTotal(request):
     total = Decimal(0)
     for customisedPizza_id in request.session.get("pizzas"):
         pizza = CustomisedPizza.objects.get(id=customisedPizza_id)
         total = total + pizza.pizza_type.price
+    return total
+
+def calculateSteakTotal(request):
+    total = Decimal(0)
+    for steak_id in request.session.get("steaks"):
+        steak = CustomisedSteak.objects.get(id=steak_id)
+        total = total + steak.steak_type.price
     return total
 
 def adminsite(request):
@@ -166,8 +224,12 @@ def adminlogin(request):
     user = authenticate(request, username=username, password=password)
     if request.user.is_authenticated and request.user.is_superuser:
         submittedOrders = SubmittedOrder.objects.all()
+        reverseOrder = []
+        for order in submittedOrders:
+            reverseOrder.append(order)
+        reverseOrder.reverse()
         context = {
-            "submittedOrders": submittedOrders
+            "submittedOrders": reverseOrder
         }
         return render(request, "orders/adminview.html", context)
     else:
@@ -180,8 +242,12 @@ def updateStatus(request, id):
     submittedOrder.status = status
     submittedOrder.save(update_fields=['status'])
     submittedOrders = SubmittedOrder.objects.all()
+    reverseOrder = []
+    for order in submittedOrders:
+        reverseOrder.append(order)
+    reverseOrder.reverse()
     context = {
-        "submittedOrders": submittedOrders
+        "submittedOrders": reverseOrder
     }
     return render(request, "orders/adminview.html", context)
 
@@ -194,6 +260,4 @@ def getprice(request):
         size = request.POST.get("size")
         type = request.POST.get("type")
         pizza = Pizza.objects.all().filter(size=size).filter(type=type).filter(topping_num=topping_num).get()
-        #data = serializers.serialize('json', pizza.price)
-        #return HttpResponse(data, content_type='application/json')
         return JsonResponse({'price':pizza.price})

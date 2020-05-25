@@ -41,6 +41,25 @@
                 {% endfor %}
               </ol>
             {% endif %}
+            {% if steaks %}
+              <li><h5 class="font-weight-light">Steak</h5></li>
+              <ol class="font-weight-light">
+              {% for steak in steaks %}
+                <li class="font-weight-light">
+                  <h6 class="font-weight-light">steak with {{ steak.steak_type.side_num}} side(s):</h6>
+                  <h6 class="font-weight-light">${{ steak.steak_type.price }}</h6>
+                  {% if steak.sides %}
+                  <ol>
+                    {% for side in steak.sides.all %}
+                      <li>{{ side.side }}</li>
+                    {% endfor %}
+                  </ol>
+                  {% endif %}
+                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'removeSteak' steak.id %}">Remove from cart</a></span>
+                </li>
+                {% endfor %}
+              </ol>
+            {% endif %}
           </ul>
            <hr class="my-4">
            <h5 class="font-weight-light" value="{{ total }}" id="total">Total: ${{ total }}</h5>

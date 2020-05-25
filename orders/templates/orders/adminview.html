@@ -30,7 +30,7 @@
     </div>
   </nav>
 
-  <body">
+  <body>
     <div style="height:80px"></div>
     <div class="container">
       <div class="row">
@@ -39,30 +39,46 @@
             <div class="card-body">
               <h5 class="card-title text-center">Orders</h5>
               {% if submittedOrders %}
-
-
                 <ol class="font-weight-light">
                 {% for submittedOrder in submittedOrders %}
                   <li style="font-size: 1.25em" class="font-weight-light">Order made: {{ submittedOrder.order.order_time }}
-                    {% if submittedOrder.order.pizzas %}
                     <ul>
-                        <li><h5 class="font-weight-light">Pizza</h5></li>
-                      <ol>
-                      {% for pizza in submittedOrder.order.pizzas.all %}
-                      <li><h6 class="font-weight-light">{{ pizza.pizza_type.type }} pizza ({{ pizza.pizza_type.topping_num }}) toppings:</h6>
-                          {% if pizza.toppings %}
-                          <ol>
+                    {% if submittedOrder.order.pizzas.all %}
+                      <li><h5 class="font-weight-light">Pizza</h5>
+                        <ol>
+                          {% for pizza in submittedOrder.order.pizzas.all %}
+                          <li style="font-size: 0.85em"><h6 class="font-weight-light">{{ pizza.pizza_type.type }} pizza with {{ pizza.pizza_type.topping_num }} topping(s):</h6>
+                            {% if pizza.toppings.all %}
+                            <ol>
                             {% for topping in pizza.toppings.all %}
-                              <li>{{ topping.topping }}</li>
+                              <li style="font-size: 0.85em">{{ topping.topping }}</li>
                             {% endfor %}
                           </ol>
                           {% endif %}
                       </li>
                       {% endfor %}
                     </ol>
-                  </ul>
                   {% endif %}
+                  </li>
+                  {% if submittedOrder.order.steaks.all %}
+                    <li><h5 class="font-weight-light">Steak</h5>
+                      <ol>
+                        {% for steak in submittedOrder.order.steaks.all %}
+                        <li style="font-size: 0.85em"><h6 class="font-weight-light">steak with {{ steak.steak_type.side_num }} side(s) ({{ steak.done }}):</h6>
+                          {% if steak.sides.all %}
+                          <ol>
+                          {% for side in steak.sides.all %}
+                            <li style="font-size: 0.85em">{{ side.side }}</li>
+                          {% endfor %}
+                        </ol>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                  </ol>
+                {% endif %}
                 </li>
+                </ul>
+              </li>
                 <h5 class="font-weight-light">Total: ${{ submittedOrder.order.bill }}</h5>
                 <h5 class="font-weight-bold">Status: {{ submittedOrder.status }}</h5>
                 <form action="{% url 'updateStatus' submittedOrder.id %}" method="post">

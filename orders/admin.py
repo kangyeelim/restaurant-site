@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Topping, Pizza, CustomisedPizza, Order, SubmittedOrder
+from .models import Topping, Pizza, CustomisedPizza, Order, SubmittedOrder, CustomisedSteak, Steak, Steakside
 # Register your models here.
 
 class CustomisedPizzaAdmin(admin.ModelAdmin):
@@ -19,3 +19,6 @@ admin.site.register(Pizza)
 admin.site.register(CustomisedPizza, CustomisedPizzaAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(SubmittedOrder)
+admin.site.register(CustomisedSteak)
+admin.site.register(Steak)
+admin.site.register(Steakside)

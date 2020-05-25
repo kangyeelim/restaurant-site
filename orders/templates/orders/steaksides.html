@@ -1,0 +1,162 @@
+{% extends "orders/layout.html" %}
+
+{% block body %}
+<div class="d-flex justify-content-center">
+  <div class="container-channel custom-window">
+    <div class="card border-0 shadow my-5">
+      <div class="card-body p-5">
+        <h4 class="card-title">Choose your steak sides</h4>
+        <form action="{% url 'addsteak' %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="size">Select Size</label>
+            <select class="form-control" id="size" name="size" required>
+              <option value="s">Small</option>
+              <option value="l">Large</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="size">Select Done-ness</label>
+            <select class="form-control" id="done" name="done" required>
+              <option value=rare>Rare</option>
+              <option value="medium">Medium Rare</option>
+              <option value="done">Done</option>
+              <option value="welldone">Well Done</option>
+            </select>
+          </div>
+          <div class="form-group" id="toppingschosen">
+            <label for="size">Select Side(s)</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="mushrooms" value="mushrooms" name="choice[]">
+                <label class="form-check-label" for="mushrooms">Mushrooms</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="onionrings" value="onionrings" name="choice[]">
+                <label class="form-check-label" for="onions">Onion Rings</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="cheese" value="cheese" name="choice[]">
+                <label class="form-check-label" for="ham">Cheese</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="salad" value="salad" name="choice[]">
+                <label class="form-check-label" for="bacon">Garden Salad</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+              <select name="quantity" id="quantity" class="form-control">
+                <option selected>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+              </select>
+          </div>
+          <p id="price" name="price">Price: $0.00</p>
+          <button class="btn-save btn btn-primary btn-sm" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+    function addEventListenerList(list, event, fn) {
+      for (var i = 0, len = list.length; i < len; i++) {
+        list[i].addEventListener(event, fn, false);
+      }
+    }
+
+    function countCheckboxes(list) {
+      var count = 0;
+      for (var i = 0, len = list.length; i < len; i++) {
+        if (list[i].checked == true) {
+          count++;
+        }
+      }
+      return count;
+    }
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.form-control').addEventListener('change', sidechosen());
+      document.querySelector('.form-control').addEventListener('change', (e)=> sidechosen());
+      var checkboxes = document.getElementsByClassName('form-check-input');
+      addEventListenerList(checkboxes, 'change', sidechosen);
+      var checkboxes = document.getElementsByClassName('form-check-input');
+      var num = countCheckboxes(checkboxes);
+      if (num > 0) {
+        sidechosen();
+      }
+  });
+
+  function sidechosen() {
+    var checkboxes = document.getElementsByClassName('form-check-input');
+    var side_num = countCheckboxes(checkboxes);
+    //var topping_num = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    var size = document.querySelector('.form-control').value;
+    if (size == '') {
+      alert('Choose the steak size.');
+    }
+    const request = new XMLHttpRequest();
+    request.open('POST', '/getsteakprice');
+    // Callback function for when request completes
+    request.onload = () => {
+      // Extract JSON data from request
+      const data = request.responseText;
+
+      // Update the result div
+      removedfirst = data.substring(11);
+      removedlast = removedfirst.substring(0, removedfirst.length-2);
+      price = (parseFloat(removedlast) * parseFloat(document.querySelector('#quantity').value)).toFixed(2);
+      const contents = `Price: $${price}`
+      document.querySelector('#price').innerHTML = contents;
+    }
+
+    const data = new FormData();
+
+    data.append('side_num', side_num);
+
+    data.append('size', size);
+    const header =  "X-CSRFToken";
+    const token = getCookie('csrftoken'); //Using the js-cookies library
+    request.setRequestHeader(header, token);
+    // Send request
+    request.send(data);
+    side_num = 0;
+  }
+
+
+</script>
+{% endblock %}

@@ -16,7 +16,7 @@
           <div class="card-body">
             <h5 class="card-title text-center">Order details</h5>
             <ul>
-            {% if order.pizzas %}
+            {% if order.pizzas.all %}
               <li><h5 class="font-weight-light">Pizza</h5></li>
               <ol>
                 {% for pizza in order.pizzas.all %}
@@ -34,7 +34,27 @@
                 {% endfor %}
               </ol>
             {% endif %}
+            {% if order.steaks.all %}
+              <li><h5 class="font-weight-light">Steak</h5></li>
+              <ol>
+                {% for steak in order.steaks.all %}
+                <li class="font-weight-light">
+                  <h6 class="font-weight-light">steak with {{ steak.steak_type.side_num }} side(s) ({{ steak.done }}): ${{ steak.steak_type.price }}</h6>
+                  {% if steak.sides.all %}
+                  <h6 class="font-weight-light">side(s):</h6>
+                  <ol>
+                    {% for side in steak.sides.all %}
+                    <li class="font-weight-light">{{ side.side }}</li>
+                    {% endfor %}
+                  </ol>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ol>
+            {% endif %}
             </ul>
+            <div style="height:10px"></div>
+            <h5 class="font-weight-light">Total: ${{ order.bill }}</h5>
           </div>
         </div>
       </div>

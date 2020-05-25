@@ -118,10 +118,6 @@
           <p id="price" name="price">Price: $0.00</p>
           <button class="btn-save btn btn-primary btn-sm" type="submit">Submit</button>
         </form>
-        <!--<div>
-          <p>Cost:</p>
-          <p id="price">$0.00</p>
-        </div>-->
       </div>
     </div>
   </div>
@@ -164,8 +160,14 @@
 
   document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('.form-control').addEventListener('change', toppingchosen());
+      document.querySelector('.form-control').addEventListener('change', (e)=>toppingchosen());
       var checkboxes = document.getElementsByClassName('form-check-input');
       addEventListenerList(checkboxes, 'change', toppingchosen);
+      var checkboxes = document.getElementsByClassName('form-check-input');
+      var num = countCheckboxes(checkboxes);
+      if (num > 0) {
+        toppingchosen();
+      }
   });
 
   function toppingchosen() {

@@ -19,5 +19,9 @@ urlpatterns = [
     path("<int:id>/removePizza", views.removePizza, name="removePizza"),
     path("<int:id>/updatestatus", views.updateStatus, name="updateStatus"),
     path("adminsignout", views.adminsignout, name="adminsignout"),
-    path("getprice", views.getprice, name="getprice")
+    path("getprice", views.getprice, name="getprice"),
+    path("steaksides", views.steaksides, name="steaksides"),
+    path("addsteak", views.addsteak, name="addsteak"),
+    path('getsteakprice', views.getsteakprice, name="getsteakprice"),
+    path("<int:id>/removesteak", views.removesteak, name="removeSteak")
 ]

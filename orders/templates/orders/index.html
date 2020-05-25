@@ -181,12 +181,6 @@
   <p class="lead" style="text-align:center">Made from the freshest ingredients.</p>
     <div class="row">
       <div class="col-lg-2 mx-auto text-center">
-        <!--<div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <p class="card-text">Pepperoni</p>
-            </div>
-          </div>-->
           <img src="../static/orders/img/pepperoni.jpg" class="rounded-circle" alt="pepperoni">
           <span class="caption font-weight-light">Pepperoni</span>
       </div>
@@ -258,7 +252,73 @@
         <img src="../static/orders/img/zucchini.jpg" class="rounded-circle img-responsive center-block" alt="zucchini">
         <span class="caption font-weight-light">Zucchini</span>
       </div>
-
   </div>
+  <div style="height:80px"></div>
+  <div class="row align-items-center">
+  <div class="col">
+    <h3 class="font-weight-light" style="text-align:center">Steak</h3>
+    <div class="card w-100 mx-auto" style="width: 18rem; align:center">
+      <img src="../static/orders/img/steak.jpg" class="card-img-top" alt="steak with baked potatoes">
+      <div class="card-body">
+          <p class="card-text">Seared to perfection and served with our classic brown sauce and golden roasted potatoes.</p>
+          <a href="{% url 'steaksides' %}" class="btn btn-primary">Order</a>
+      <div style="height:20px"></div>
+      <table class="card-table table">
+          <thead>
+            <tr>
+              <th>Small</th>
+              <th>Large</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+              With Roasted Potatoes $7.90
+              </td>
+              <td>
+                With Roasted Potatoes $9.90
+              </td>
+            </tr>
+            <tr>
+              <td>
+                + Cheese +$0.80
+              </td>
+              <td>
+                + Cheese +$1.00
+              </td>
+            </tr>
+            <tr>
+              <td>
+               + Stir Fried Mushrooms +$0.80
+              </td>
+              <td>
+                + Stir Fried Mushrooms +$1.00
+              </td>
+            </tr>
+            <tr>
+              <td>
+                + Onion rings +$0.80
+              </td>
+              <td>
+                + Onion rings +$1.00
+              </td>
+            </tr>
+            <tr>
+              <td>
+              + Garden Salad +$0.80
+              </td>
+              <td>
+              + Garden Salad +$1.00
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+  </div>
+</div>
+
 </section>
 {% endblock %}
