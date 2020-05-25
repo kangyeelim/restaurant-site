@@ -52,6 +52,15 @@
                 {% endfor %}
               </ol>
             {% endif %}
+            {% if order.pastas.all %}
+              <li><h5 class="font-weight-light">Pasta</h5></li>
+              <ol>
+                {% for pasta in order.pastas.all %}
+                <li class="font-weight-light">
+                  <h6 class="font-weight-light">{{ pasta.type }}: ${{ pasta.price }}</h6></li>
+                {% endfor %}
+              </ol>
+            {% endif %}
             </ul>
             <div style="height:10px"></div>
             <h5 class="font-weight-light">Total: ${{ order.bill }}</h5>

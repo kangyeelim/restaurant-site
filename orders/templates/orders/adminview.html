@@ -77,6 +77,15 @@
                   </ol>
                 {% endif %}
                 </li>
+                {% if submittedOrder.order.pastas %}
+                  <li><h5 class="font-weight-light">Pasta</h5>
+                    <ol>
+                      {% for pasta in submittedOrder.order.pastas.all %}
+                      <li style="font-size: 0.85em"><h6 class="font-weight-light">{{ pasta.type }}</h6></li>
+                      {% endfor %}
+                    </ol>
+                    {% endif %}
+                  </li>
                 </ul>
               </li>
                 <h5 class="font-weight-light">Total: ${{ submittedOrder.order.bill }}</h5>

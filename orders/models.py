@@ -44,3 +44,9 @@ class CustomisedSteak(models.Model):
     sides = models.ManyToManyField(Steakside, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="steaks")
     done = models.CharField(max_length=64, default="done")
+
+class Pasta(models.Model):
+    type = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    order = models.ManyToManyField(Order, related_name="pastas", blank=True)
+    

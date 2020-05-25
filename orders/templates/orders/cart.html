@@ -36,7 +36,7 @@
                     {% endfor %}
                   </ol>
                   {% endif %}
-                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'removePizza' pizza.id %}">Remove from cart</a></span>
+                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'removePizza' pizza.id %}">Remove from cart</a>
                 </li>
                 {% endfor %}
               </ol>
@@ -55,7 +55,19 @@
                     {% endfor %}
                   </ol>
                   {% endif %}
-                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'removeSteak' steak.id %}">Remove from cart</a></span>
+                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'removeSteak' steak.id %}">Remove from cart</a>
+                </li>
+                {% endfor %}
+              </ol>
+            {% endif %}
+            {% if pastas %}
+              <li><h5 class="font-weight-light">Pasta</h5></li>
+              <ol class="font-weight-light">
+              {% for pasta in pastas %}
+                <li class="font-weight-light">
+                  <h6 class="font-weight-light">{{ pasta.type }}:</h6>
+                  <h6 class="font-weight-light">${{ pasta.price }}</h6>
+                  <a style="font-size: 0.85em" class="font-weight-light" href="{% url 'removepasta' pasta.id %}">Remove from cart</a>
                 </li>
                 {% endfor %}
               </ol>

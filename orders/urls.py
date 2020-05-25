@@ -24,5 +24,7 @@ urlpatterns = [
     path("addsteak", views.addsteak, name="addsteak"),
     path('getsteakprice', views.getsteakprice, name="getsteakprice"),
     path("<int:id>/removesteak", views.removesteak, name="removeSteak"),
-    path("location", views.location, name="location")
+    path("location", views.location, name="location"),
+    #path("<type>/addpasta", views.addpasta, name="addpasta"),
+    #path("<int:id>/removepasta", views.removePasta, name="removepasta")
 ]

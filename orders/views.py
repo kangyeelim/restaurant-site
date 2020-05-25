@@ -7,7 +7,7 @@ from decimal import *
 from django.views.decorators.http import require_http_methods
 
 from datetime import datetime
-from .models import Pizza, Topping, CustomisedPizza, Order, SubmittedOrder, CustomisedSteak, Steak, Steakside
+from .models import Pizza, Topping, CustomisedPizza, Order, SubmittedOrder, CustomisedSteak, Steak, Steakside, Pasta
 
 # Create your views here.
 
@@ -71,6 +71,16 @@ def addsteak(request):
             customisedSteak.sides.add(side)
         request.session.get("steaks").append(customisedSteak.id)
         return render(request, "orders/index.html")
+
+"""
+def addpasta(request, type):
+    if not request.user.is_authenticated:
+        return render(request, "orders/login.html", {"message": 'Please sign in to order.'})
+    pasta = Pasta.objects.all().filter(type=type).get()
+    pasta.order.add(Order.objects.get(id=request.session.get("order")))
+    request.session.get("pastas").append(pasta.id)
+    return render(request, "orders/index.html")
+"""
 
 def getsteakprice(request):
     if request.method == 'POST':
@@ -146,6 +156,15 @@ def cart(request):
     context = getFoodsAndTotal(request)
     return render(request, "orders/cart.html", context, {"message": None})
 
+"""
+def calculatePastaTotal(request):
+    total = Decimal(0)
+    for pasta_id in request.session.get("pastas"):
+        pasta = Pasta.objects.get(id=pasta_id)
+        total = total + pasta.price
+    return total
+"""
+
 def getFoodsAndTotal(request):
     pizzas = []
     if request.session.get("pizzas") is None:
@@ -157,12 +176,18 @@ def getFoodsAndTotal(request):
     for steak_id in request.session.get("steaks"):
         steak = CustomisedSteak.objects.get(id=steak_id)
         steaks.append(steak)
-
-    total = calculateTotal(request) + calculateSteakTotal(request)
+    """
+    pastas = []
+    for pasta_id in request.session.get('pastas'):
+        pasta = Pasta.objects.get(id=pasta_id)
+        pastas.append(pasta)
+    """
+    total = calculateTotal(request) + calculateSteakTotal(request) #+ calculatePastaTotal(request)
     context = {
         "pizzas": pizzas,
         "total": total,
-        "steaks": steaks
+        "steaks": steaks#,
+        #"pastas": pastas
     }
     return context
 
@@ -174,6 +199,7 @@ def removePizza(request, id):
     context = getFoodsAndTotal(request)
     return render(request, "orders/cart.html", context, {"message": "Removed from cart."})
 
+
 def removesteak(request, id):
     if not request.user.is_authenticated:
         return render(request, "orders/login.html", {"message": None}) #done
@@ -182,11 +208,22 @@ def removesteak(request, id):
     context = getFoodsAndTotal(request)
     return render(request, "orders/cart.html", context, {"message": "Removed from cart."})
 
+"""
+def removePasta(request, id):
+    if not request.user.is_authenticated:
+        return render(request, "orders/login.html", {"message": None}) #done
+    pasta = Pasta.objects.get(id=id)
+    order_id = request.session.get("order")
+    pasta.order.remove(Order.objects.get(id=order_id))
+    request.session.get("pastas").remove(id)
+    context = getFoodsAndTotal(request)
+    return render(request, "orders/cart.html", context, {"message": "Removed from cart."})
+"""
 
 def submitorder(request):
     order = Order.objects.get(id=request.session.get("order"))
     order.order_time = datetime.now()
-    order.bill = calculateTotal(request) + calculateSteakTotal(request)
+    order.bill = calculateTotal(request) + calculateSteakTotal(request) + calculatePastaTotal(request)
     order.save()
     submittedOrder = SubmittedOrder(order = order)
     submittedOrder.save()
@@ -200,6 +237,7 @@ def initialiseSession(request):
     request.session['order'] = order.id
     request.session['pizzas'] = []
     request.session['steaks'] = []
+    request.session['pastas'] = []
 
 def calculateTotal(request):
     total = Decimal(0)
