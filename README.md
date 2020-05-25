@@ -5,7 +5,7 @@ owner to keep track of orders.
 
 ### https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/
 
-![](orders/static/img/menu.png)
+![](orders/static/orders/img/menu.png)
 
 ## Usage
 * Choose and customised pizza
