@@ -115,7 +115,7 @@
                 <option>20</option>
               </select>
           </div>
-          <p id="price" name="price">$0.00</p>
+          <p id="price" name="price">Price: $0.00</p>
           <button class="btn-save btn btn-primary btn-sm" type="submit">Submit</button>
         </form>
         <!--<div>
@@ -169,12 +169,10 @@
   });
 
   function toppingchosen() {
-    console.log("inside");
     var checkboxes = document.getElementsByClassName('form-check-input');
     var topping_num = countCheckboxes(checkboxes);
     //var topping_num = document.querySelectorAll('input[type="checkbox"]:checked').length;
     var size = document.querySelector('.form-control').value;
-    console.log(topping_num);
     if (size == '') {
       alert('Choose the pizza size.');
     } else {
@@ -191,15 +189,10 @@
       const data = request.responseText;
 
       // Update the result div
-
-      console.log("received data")
-      console.log(data)
-      removedfirst = data.substring(1);
-      removedlast = removedfirst.substring(0, removedfirst.length-1);
-      console.log("Data with [] removed: " + removedlast);
-
-      price = parseFloat(data.price) * parseFloat(document.querySelector('#quantity').value);
-      const contents = `$${price}`
+      removedfirst = data.substring(11);
+      removedlast = removedfirst.substring(0, removedfirst.length-2);
+      price = (parseFloat(removedlast) * parseFloat(document.querySelector('#quantity').value)).toFixed(2);
+      const contents = `Price: $${price}`
       document.querySelector('#price').innerHTML = contents;
     }
 
@@ -214,7 +207,6 @@
     request.setRequestHeader(header, token);
     // Send request
     request.send(data);
-    console.log("sent")
     topping_num = 0;
   }
 

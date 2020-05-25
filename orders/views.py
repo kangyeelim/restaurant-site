@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from decimal import *
@@ -196,4 +196,4 @@ def getprice(request):
         pizza = Pizza.objects.all().filter(size=size).filter(type=type).filter(topping_num=topping_num).get()
         #data = serializers.serialize('json', pizza.price)
         #return HttpResponse(data, content_type='application/json')
-        return jsonify({"price": pizza.price})
+        return JsonResponse({'price':pizza.price})
